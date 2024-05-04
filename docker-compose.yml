@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.5
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: superflix
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uadmin -padmin"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  server:
+    container_name: server
+    build: ./server
+    ports:
+      - '8081:8080'
+    depends_on:
+      mariadb:
+        condition: service_healthy

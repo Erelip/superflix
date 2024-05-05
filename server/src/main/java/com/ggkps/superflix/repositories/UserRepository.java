@@ -1,6 +1,6 @@
-package com.gkps.superflix.repositories;
+package com.ggkps.superflix.repositories;
 
-import com.gkps.superflix.entities.User;
+import com.ggkps.superflix.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> { }

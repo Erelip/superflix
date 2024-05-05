@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS movie (
 );
 
 CREATE TABLE IF NOT EXISTS serie (
-     id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-     numberOfSeasons INT,
-     visualContentId bigint REFERENCES visual_content(id)
+    id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    numberOfSeasons INT,
+    visualContentId bigint REFERENCES visual_content(id)
 );
 
 CREATE TABLE IF NOT EXISTS season (

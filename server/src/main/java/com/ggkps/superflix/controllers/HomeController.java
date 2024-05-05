@@ -1,8 +1,8 @@
-package com.gkps.superflix.controllers;
+package com.ggkps.superflix.controllers;
 
-import com.gkps.superflix.SuperflixApplication;
-import com.gkps.superflix.entities.User;
-import com.gkps.superflix.repositories.UserRepository;
+import com.ggkps.superflix.SuperflixApplication;
+import com.ggkps.superflix.entities.User;
+import com.ggkps.superflix.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

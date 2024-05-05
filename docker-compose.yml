@@ -16,8 +16,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - superflix-network
 
   server:
     container_name: server
@@ -27,3 +27,12 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+    networks:
+      - superflix-network
+    restart: on-failure
+    links:
+      - mariadb
+
+networks:
+  superflix-network:
+    driver: bridge

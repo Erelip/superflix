@@ -1,4 +1,4 @@
-package com.gkps.superflix.entities;
+package com.ggkps.superflix.entities;
 
 import jakarta.persistence.*;
 

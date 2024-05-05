@@ -1,10 +1,10 @@
-package com.gkps.superflix.controllers;
+package com.ggkps.superflix.controllers;
 
-import com.gkps.superflix.SuperflixApplication;
-import com.gkps.superflix.entities.User;
-import com.gkps.superflix.entities.VisualContent;
-import com.gkps.superflix.repositories.UserRepository;
-import com.gkps.superflix.repositories.VisualContentRepository;
+import com.ggkps.superflix.SuperflixApplication;
+import com.ggkps.superflix.entities.User;
+import com.ggkps.superflix.entities.VisualContent;
+import com.ggkps.superflix.repositories.UserRepository;
+import com.ggkps.superflix.repositories.VisualContentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

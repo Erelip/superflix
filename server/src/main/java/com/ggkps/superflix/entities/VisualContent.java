@@ -1,9 +1,26 @@
 package com.ggkps.superflix.entities;
 
+import com.ggkps.superflix.entities.Serie;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
+
+/*
+    CREATE TABLE IF NOT EXISTS visual_content (
+        id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        title VARCHAR(50),
+        description TEXT,
+        category VARCHAR(100),
+        creator VARCHAR(50),
+        release_at DATE
+    );
+    CREATE TABLE IF NOT EXISTS serie (
+        id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        numberOfSeasons INT,
+        visualContentId bigint REFERENCES visual_content(id)
+    );
+ */
 @Entity(name = "visual_content")
 @Table
 public class VisualContent {
@@ -16,6 +33,9 @@ public class VisualContent {
     private String category;
     private String creator;
     private Date release_at;
+
+    @OneToOne(mappedBy = "visualContent", cascade = CascadeType.ALL)
+    private Serie serie;
 
     public Long getId() {
         return this.id;

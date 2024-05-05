@@ -31,26 +31,29 @@ CREATE TABLE IF NOT EXISTS movie (
     id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
     duration INT,
     path VARCHAR(100),
-    visualContentId bigint REFERENCES visual_content(id)
+    visual_content_id bigint REFERENCES visual_content(id)
 );
 
 CREATE TABLE IF NOT EXISTS serie (
     id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    numberOfSeasons INT,
-    visualContentId bigint REFERENCES visual_content(id)
+    number_of_seasons INT,
+    visual_content_id bigint UNIQUE,
+    FOREIGN KEY (visual_content_id) REFERENCES visual_content(id)
 );
 
 CREATE TABLE IF NOT EXISTS season (
     id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    numberOfEpisode INT,
-    serieId bigint REFERENCES serie(id),
-    release_at DATE
+    number_of_episode INT,
+    serie_id bigint,
+    release_at DATE,
+    FOREIGN KEY (serie_id) REFERENCES serie(id)
 );
 
 CREATE TABLE IF NOT EXISTS episode (
     id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
     number INT,
-    seasonId bigint REFERENCES season(id),
+    season_id bigint,
     path VARCHAR(100),
-    release_at DATE
+    release_at DATE,
+    FOREIGN KEY (season_id) REFERENCES season(id)
 );

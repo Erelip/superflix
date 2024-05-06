@@ -29,24 +29,30 @@ public class Season {
         return id;
     }
 
-    public void setId(Long id) {
+    public Season setId(Long id) {
         this.id = id;
+
+        return this;
     }
 
     public Integer getNumberOfEpisodes() {
         return numberOfEpisodes;
     }
 
-    public void setNumberOfEpisodes(Integer numberOfEpisodes) {
+    public Season setNumberOfEpisodes(Integer numberOfEpisodes) {
         this.numberOfEpisodes = numberOfEpisodes;
+
+        return this;
     }
 
     public Serie getSerie() {
         return serie;
     }
 
-    public void setSerie(Serie serie) {
+    public Season setSerie(Serie serie) {
         this.serie = serie;
+
+        return this;
     }
 
     @Override

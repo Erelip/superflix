@@ -47,21 +47,21 @@ public class SerieCRUD {
 
     @PatchMapping("/serie/{serie_id}")
     public String updateSerie(@PathVariable("serie_id") long serie_id, @RequestBody SerieContent serieContent) {
-        Optional<Serie> movie = serieRepository.findById(serie_id);
+        Optional<Serie> serie = serieRepository.findById(serie_id);
 
-        if (movie.isEmpty()) {
-            return "Movie not found";
+        if (serie.isEmpty()) {
+            return "Serie not found";
         }
 
-        Serie updatedMovie = serieService.updateSerie(serie_id, serieContent);
+        Serie updatedSerie = serieService.updateSerie(serie_id, serieContent);
 
-        return updatedMovie.toString();
+        return updatedSerie.toString();
     }
 
     @DeleteMapping("/serie/{serie_id}")
     public String deleteSerie(@PathVariable("serie_id") Long serie_id) {
         boolean exists = serieService.deleteSerie(serie_id);
 
-        return exists ? "Movie deleted" : "Movie not found";
+        return exists ? "Serie deleted" : "Serie not found";
     }
 }

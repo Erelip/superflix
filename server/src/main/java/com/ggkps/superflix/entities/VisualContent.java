@@ -37,6 +37,9 @@ public class VisualContent {
     @OneToOne(mappedBy = "visualContent", cascade = CascadeType.ALL)
     private Serie serie;
 
+    @OneToOne(mappedBy = "visualContent", cascade = CascadeType.ALL)
+    private Movie movie;
+
     public Long getId() {
         return this.id;
     }
@@ -49,40 +52,50 @@ public class VisualContent {
         return this.title;
     }
 
-    public void setTitle(String title) {
+    public VisualContent setTitle(String title) {
         this.title = title;
+
+        return this;
     }
 
     public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(String description) {
+    public VisualContent setDescription(String description) {
         this.description = description;
+
+        return this;
     }
 
     public String getCategory() {
         return this.category;
     }
 
-    public void setCategory(String category) {
+    public VisualContent setCategory(String category) {
         this.category = category;
+
+        return this;
     }
 
     public String getCreator() {
         return this.creator;
     }
 
-    public void setCreator(String creator) {
+    public VisualContent setCreator(String creator) {
         this.creator = creator;
+
+        return this;
     }
 
     public Date getReleaseAt() {
         return this.release_at;
     }
 
-    public void setReleaseAt(Date release_at) {
+    public VisualContent setReleaseAt(Date release_at) {
         this.release_at = release_at;
+
+        return this;
     }
 
     public String toString() {

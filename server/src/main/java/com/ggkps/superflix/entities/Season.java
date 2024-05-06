@@ -13,6 +13,9 @@ public class Season {
     @Column
     private Integer numberOfEpisodes;
 
+    @Column
+    private Integer number;
+
     @ManyToOne
     @JoinColumn(name="serie_id", nullable=false)
     private Serie serie;
@@ -45,6 +48,16 @@ public class Season {
         return this;
     }
 
+    public Integer getNumber() {
+        return number;
+    }
+
+    public Season setNumber(Integer number) {
+        this.number = number;
+
+        return this;
+    }
+
     public Serie getSerie() {
         return serie;
     }
@@ -60,6 +73,7 @@ public class Season {
         return "Season{" +
                 "id=" + id +
                 ", numberOfEpisodes=" + numberOfEpisodes +
+                ", number=" + number +
                 ", serie=" + serie +
                 '}';
     }

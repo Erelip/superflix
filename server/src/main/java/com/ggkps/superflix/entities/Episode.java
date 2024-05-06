@@ -32,6 +32,9 @@ public class Episode {
     @Column
     private Date release_at;
 
+    @Column
+    private Integer duration;
+
     @ManyToOne
     @JoinColumn(name="season_id", nullable=false)
     private Season season;
@@ -40,8 +43,10 @@ public class Episode {
     public Episode() {
     }
 
-    public Episode(Integer number, Season season) {
+    public Episode(Integer number, String path, Integer duration, Season season) {
+        this.duration = duration;
         this.number = number;
+        this.path = path;
         this.season = season;
     }
 
@@ -79,6 +84,16 @@ public class Episode {
 
     public Episode setRelease_at(Date release_at) {
         this.release_at = release_at;
+
+        return this;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public Episode setDuration(Integer duration) {
+        this.duration = duration;
 
         return this;
     }

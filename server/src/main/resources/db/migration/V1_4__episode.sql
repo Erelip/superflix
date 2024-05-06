@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS episode (
     season_id bigint,
     path VARCHAR(100),
     release_at DATE,
+    duration INT,
     FOREIGN KEY (season_id) REFERENCES season(id)
 );

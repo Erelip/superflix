@@ -8,13 +8,7 @@ DROP TABLE IF EXISTS visual_content;
 CREATE TABLE IF NOT EXISTS user (
     id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
     email VARCHAR(50) UNIQUE,
-    firstname VARCHAR(25),
-    lastname VARCHAR(25),
-    password VARCHAR(100)
-);
-
-DROP TABLE IF EXISTS role;
-CREATE TABLE IF NOT EXISTS role (
-    id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(25) UNIQUE
+    username VARCHAR(25),
+    password VARCHAR(100),
+    role VARCHAR(25)
 );

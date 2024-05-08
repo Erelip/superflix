@@ -1,4 +1,4 @@
-package com.ggkps.superflix.api;
+package com.ggkps.superflix.api.professional;
 
 import com.ggkps.superflix.entities.Season;
 import com.ggkps.superflix.repositories.SeasonRepository;
@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-public class SeasonCRUD {
+@RequestMapping("/api/v1/professional")
+public class SeasonPro {
 
     @Autowired
     private SeasonRepository seasonRepository;
@@ -17,7 +18,7 @@ public class SeasonCRUD {
     @Autowired
     private SeasonService seasonService;
 
-    public SeasonCRUD() {
+    public SeasonPro() {
     }
 
     @PostMapping("/season/")

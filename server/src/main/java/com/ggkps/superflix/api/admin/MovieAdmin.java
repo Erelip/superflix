@@ -1,7 +1,8 @@
-package com.ggkps.superflix.api;
+package com.ggkps.superflix.api.admin;
 
 import com.ggkps.superflix.models.MovieContent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ggkps.superflix.entities.Movie;
 import com.ggkps.superflix.repositories.MovieRepository;
@@ -9,8 +10,11 @@ import com.ggkps.superflix.services.MovieService;
 
 import java.util.Optional;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
-public class MovieCRUD {
+@RequestMapping("/api/v1/admin")
+public class MovieAdmin {
 
     @Autowired
     private MovieRepository movieRepository;
@@ -18,10 +22,10 @@ public class MovieCRUD {
     @Autowired
     private MovieService movieService;
 
-    public MovieCRUD() {
+    public MovieAdmin() {
     }
 
-    @PostMapping("/movie/")
+    @PostMapping("/movie")
     public String createMovie(@RequestBody MovieContent movieContent) {
         Movie newMovie = movieService.createMovie(movieContent);
 
@@ -35,14 +39,12 @@ public class MovieCRUD {
     }
 
     @GetMapping("/movie/{movie_id}")
-    public String readMovie(@PathVariable("movie_id") Long movie_id) {
+    public ResponseEntity<Movie> readMovie(@PathVariable("movie_id") Long movie_id) {
         Optional<Movie> movie = movieRepository.findById(movie_id);
+        System.out.println(movie);
 
-        if (movie.isPresent()) {
-            return movie.get().toString();
-        }
+        return movie.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
-        return "Movie not found";
     }
 
     @PatchMapping("/movie/{movie_id}")

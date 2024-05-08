@@ -1,4 +1,4 @@
-package com.ggkps.superflix.api;
+package com.ggkps.superflix.api.professional;
 
 import com.ggkps.superflix.entities.Episode;
 import com.ggkps.superflix.models.EpisodeContent;
@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-public class EpisodeCRUD {
+@RequestMapping("/api/v1/professional")
+public class EpisodePro {
 
     @Autowired
     private EpisodeRepository episodeRepository;
@@ -18,7 +19,7 @@ public class EpisodeCRUD {
     @Autowired
     private EpisodeService episodeService;
 
-    public EpisodeCRUD() {
+    public EpisodePro() {
     }
 
     @PostMapping("/episode/")

@@ -39,7 +39,6 @@ public class Episode {
     @JoinColumn(name="season_id", nullable=false)
     private Season season;
 
-
     public Episode() {
     }
 

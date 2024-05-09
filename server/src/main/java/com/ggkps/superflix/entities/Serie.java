@@ -3,6 +3,7 @@ package com.ggkps.superflix.entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /*
@@ -42,6 +43,9 @@ public class Serie {
     @JoinColumn(name = "visualContentId", referencedColumnName = "id")
     private VisualContent visualContent;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = CascadeType.ALL)
+    private List<Season> seasons;
+
     public Serie() {
     }
 
@@ -72,6 +76,14 @@ public class Serie {
 
     public void setVisualContent(VisualContent visualContent) {
         this.visualContent = visualContent;
+    }
+
+    public List<Season> getSeasons() {
+        return seasons;
+    }
+
+    public void setSeasons(List<Season> seasons) {
+        this.seasons = seasons;
     }
 
     @Override

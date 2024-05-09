@@ -4,6 +4,7 @@ import com.ggkps.superflix.entities.Serie;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /*
@@ -39,6 +40,24 @@ public class VisualContent {
 
     @OneToOne(mappedBy = "visualContent", cascade = CascadeType.ALL)
     private Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "visual_content", cascade = CascadeType.ALL)
+    private List<Favorite> favorite;
+
+    public VisualContent() {
+    }
+
+    public VisualContent(String title, String description, String category, String creator, Date release_at) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.creator = creator;
+        this.release_at = release_at;
+    }
 
     public Long getId() {
         return this.id;
@@ -94,6 +113,46 @@ public class VisualContent {
 
     public VisualContent setReleaseAt(Date release_at) {
         this.release_at = release_at;
+
+        return this;
+    }
+
+    public Serie getSerie() {
+        return this.serie;
+    }
+
+    public VisualContent setSerie(Serie serie) {
+        this.serie = serie;
+
+        return this;
+    }
+
+    public Movie getMovie() {
+        return this.movie;
+    }
+
+    public VisualContent setMovie(Movie movie) {
+        this.movie = movie;
+
+        return this;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public VisualContent setUser(User user) {
+        this.user = user;
+
+        return this;
+    }
+
+    public List<Favorite> getFavorite() {
+        return this.favorite;
+    }
+
+    public VisualContent setFavorite(List<Favorite> favorite) {
+        this.favorite = favorite;
 
         return this;
     }

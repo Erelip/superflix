@@ -4,5 +4,7 @@ CREATE TABLE IF NOT EXISTS visual_content (
     description TEXT,
     category VARCHAR(100),
     creator VARCHAR(50),
-    release_at DATE
+    release_at DATE,
+    user_id bigint,
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );

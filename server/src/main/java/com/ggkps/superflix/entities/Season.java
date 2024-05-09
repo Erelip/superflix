@@ -2,6 +2,8 @@ package com.ggkps.superflix.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity(name = "season")
 @Table
 public class Season {
@@ -19,6 +21,9 @@ public class Season {
     @ManyToOne
     @JoinColumn(name="serie_id", nullable=false)
     private Serie serie;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "season", cascade = CascadeType.ALL)
+    private List<Episode> episodes;
 
     public Season() {
     }
@@ -64,6 +69,16 @@ public class Season {
 
     public Season setSerie(Serie serie) {
         this.serie = serie;
+
+        return this;
+    }
+
+    public List<Episode> getEpisodes() {
+        return episodes;
+    }
+
+    public Season setEpisodes(List<Episode> episodes) {
+        this.episodes = episodes;
 
         return this;
     }

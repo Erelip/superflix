@@ -22,19 +22,6 @@ public class SerieUser {
     public SerieUser() {
     }
 
-    @PostMapping("/serie/")
-    public String createSerie(@RequestBody SerieContent serieContent) {
-        Serie newSerie = serieService.createSerie(serieContent);
-
-        System.out.println(newSerie);
-
-        if (newSerie != null) {
-            return newSerie.toString();
-        }
-
-        return "Serie not created";
-    }
-
     @GetMapping("/serie/{serie_id}")
     public String readSerie(@PathVariable("serie_id") Long serie_id) {
         Optional<Serie> serie = serieRepository.findById(serie_id);
@@ -44,25 +31,5 @@ public class SerieUser {
         }
 
         return "Serie not found";
-    }
-
-    @PatchMapping("/serie/{serie_id}")
-    public String updateSerie(@PathVariable("serie_id") long serie_id, @RequestBody SerieContent serieContent) {
-        Optional<Serie> serie = serieRepository.findById(serie_id);
-
-        if (serie.isEmpty()) {
-            return "Serie not found";
-        }
-
-        Serie updatedSerie = serieService.updateSerie(serie_id, serieContent);
-
-        return updatedSerie.toString();
-    }
-
-    @DeleteMapping("/serie/{serie_id}")
-    public String deleteSerie(@PathVariable("serie_id") Long serie_id) {
-        boolean exists = serieService.deleteSerie(serie_id);
-
-        return exists ? "Serie deleted" : "Serie not found";
     }
 }

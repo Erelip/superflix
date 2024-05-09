@@ -22,19 +22,6 @@ public class MovieUser {
     public MovieUser() {
     }
 
-    @PostMapping("/movie/")
-    public String createMovie(@RequestBody MovieContent movieContent) {
-        Movie newMovie = movieService.createMovie(movieContent);
-
-        System.out.println(newMovie);
-
-        if (newMovie != null) {
-            return newMovie.toString();
-        }
-
-        return "Movie not created";
-    }
-
     @GetMapping("/movie/{movie_id}")
     public String readMovie(@PathVariable("movie_id") Long movie_id) {
         Optional<Movie> movie = movieRepository.findById(movie_id);
@@ -44,25 +31,5 @@ public class MovieUser {
         }
 
         return "Movie not found";
-    }
-
-    @PatchMapping("/movie/{movie_id}")
-    public String updateMovie(@PathVariable("movie_id") long movie_id, @RequestBody MovieContent movieContent) {
-        Optional<Movie> movie = movieRepository.findById(movie_id);
-
-        if (movie.isEmpty()) {
-            return "Movie not found";
-        }
-
-        Movie updatedMovie = movieService.updateMovie(movie_id, movieContent);
-
-        return updatedMovie.toString();
-    }
-
-    @DeleteMapping("/movie/{movie_id}")
-    public String deleteMovie(@PathVariable("movie_id") Long movie_id) {
-        boolean exists = movieService.deleteMovie(movie_id);
-
-        return exists ? "Movie deleted" : "Movie not found";
     }
 }

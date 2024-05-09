@@ -36,20 +36,21 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private String createToken(Map<String, Object> claims, String subject, String role) {
+    private String createToken(Map<String, Object> claims, String subject, String role, String email) {
         return Jwts.builder()
                 .setClaims(claims)
                 .addClaims(Map.of("role", role))
+                .addClaims(Map.of("email", email))
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 5))
+                .setExpiration(new Date(System.currentTimeMillis() + 10000 * 60 * 60 * 5))
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 
-    public String generateToken(Authentication authentication, String role) {
+    public String generateToken(Authentication authentication, String role, String email) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, authentication.getName(), role);
+        return createToken(claims, authentication.getName(), role, email);
     }
 
     public Boolean validateToken(String token) {
@@ -63,6 +64,10 @@ public class JwtService {
 
     public String extractRole(String token) {
         return (String) extractAllClaims(token).get("role");
+    }
+
+    public String extractEmail(String token) {
+        return (String) extractAllClaims(token).get("email");
     }
 
     public Date extractExpiration(String token) {

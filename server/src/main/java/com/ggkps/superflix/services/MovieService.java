@@ -1,5 +1,6 @@
 package com.ggkps.superflix.services;
 
+import com.ggkps.superflix.entities.User;
 import com.ggkps.superflix.models.MovieContent;
 import com.ggkps.superflix.repositories.VisualContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,14 @@ public class MovieService {
         return new Movie(duration, path, visualContent);
     }
 
-    public Movie createMovie(MovieContent movieContent) {
+    public Movie createMovie(MovieContent movieContent, User user) {
         VisualContent visualContent = new VisualContent()
                 .setTitle(movieContent.getTitle())
                 .setReleaseAt(movieContent.getReleaseAt() != null ? movieContent.getReleaseAt() : new Date())
                 .setCategory(movieContent.getCategory())
                 .setCreator(movieContent.getCreator())
-                .setDescription(movieContent.getDescription());
+                .setDescription(movieContent.getDescription())
+                .setUser(user);
 
         Movie newMovie = new Movie(movieContent.getDuration(), movieContent.getPath(), visualContent);
         visualContentRepository.save(visualContent);

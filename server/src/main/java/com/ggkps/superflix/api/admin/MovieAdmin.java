@@ -1,13 +1,21 @@
 package com.ggkps.superflix.api.admin;
 
+import com.ggkps.superflix.entities.User;
+import com.ggkps.superflix.entities.VisualContent;
 import com.ggkps.superflix.models.MovieContent;
+import com.ggkps.superflix.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ggkps.superflix.entities.Movie;
 import com.ggkps.superflix.repositories.MovieRepository;
 import com.ggkps.superflix.services.MovieService;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -15,6 +23,9 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping("/api/v1/admin")
 public class MovieAdmin {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MovieRepository movieRepository;
@@ -26,44 +37,45 @@ public class MovieAdmin {
     }
 
     @PostMapping("/movie")
-    public String createMovie(@RequestBody MovieContent movieContent) {
-        Movie newMovie = movieService.createMovie(movieContent);
-
-        System.out.println(newMovie);
-
-        if (newMovie != null) {
-            return newMovie.toString();
+    public ResponseEntity<Movie> createMovie(@RequestHeader(value="Authorization") String authorization, @RequestBody MovieContent movieContent) {
+        authorization = authorization.replace("Bearer ", "");
+        Optional<User> user = userService.getUserFromToken(authorization);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        return "Movie not created";
+        Movie newMovie = movieService.createMovie(movieContent, user.get());
+
+        if (newMovie != null) {
+            return ResponseEntity.ok().body(newMovie);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/movie")
+    public ResponseEntity<List<Movie>> readMovies(@RequestHeader(value="Authorization") String authorization) {
+        List<Movie> movies = movieRepository.findAll();
+        return ResponseEntity.ok().body(movies);
     }
 
     @GetMapping("/movie/{movie_id}")
-    public ResponseEntity<Movie> readMovie(@PathVariable("movie_id") Long movie_id) {
+    public ResponseEntity<Movie> readMovie(@RequestHeader(value="Authorization") String authorization, @PathVariable("movie_id") Long movie_id) {
         Optional<Movie> movie = movieRepository.findById(movie_id);
-        System.out.println(movie);
-
-        return movie.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-
+        return movie.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/movie/{movie_id}")
-    public String updateMovie(@PathVariable("movie_id") long movie_id, @RequestBody MovieContent movieContent) {
-        Optional<Movie> movie = movieRepository.findById(movie_id);
-
-        if (movie.isEmpty()) {
-            return "Movie not found";
-        }
-
+    public ResponseEntity<Movie> updateMovie(@RequestHeader(value="Authorization") String authorization, @PathVariable("movie_id") long movie_id, @RequestBody MovieContent movieContent) {
         Movie updatedMovie = movieService.updateMovie(movie_id, movieContent);
 
-        return updatedMovie.toString();
+        return ResponseEntity.ok().body(updatedMovie);
     }
 
     @DeleteMapping("/movie/{movie_id}")
-    public String deleteMovie(@PathVariable("movie_id") Long movie_id) {
+    public ResponseEntity<Movie> deleteMovie(@RequestHeader(value="Authorization") String authorization, @PathVariable("movie_id") Long movie_id) {
         boolean exists = movieService.deleteMovie(movie_id);
 
-        return exists ? "Movie deleted" : "Movie not found";
+        return exists ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

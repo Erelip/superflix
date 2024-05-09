@@ -49,7 +49,7 @@ public class AuthenticationController {
                 .roles(user.getRole())
                 .build();
         System.out.println(user);
-        String token = jwtTokenUtil.generateToken(new UsernamePasswordAuthenticationToken(userDetails, null), user.getRole());
+        String token = jwtTokenUtil.generateToken(new UsernamePasswordAuthenticationToken(userDetails, null), user.getRole(), user.getEmail());
         System.out.println(token);
         return ResponseEntity.ok(new Jwt(token));
     }

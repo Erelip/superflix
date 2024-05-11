@@ -27,4 +27,13 @@ public class UserService {
     public Optional<User> authenticate(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password);
     }
+
+    public boolean deleteUser(long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return false;
+        }
+        userRepository.delete(user.get());
+        return true;
+    }
 }

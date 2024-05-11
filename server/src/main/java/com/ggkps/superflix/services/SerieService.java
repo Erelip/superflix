@@ -2,6 +2,7 @@ package com.ggkps.superflix.services;
 
 import com.ggkps.superflix.entities.Movie;
 import com.ggkps.superflix.entities.Serie;
+import com.ggkps.superflix.entities.User;
 import com.ggkps.superflix.entities.VisualContent;
 import com.ggkps.superflix.models.SerieContent;
 import com.ggkps.superflix.repositories.SerieRepository;
@@ -24,13 +25,14 @@ public class SerieService {
     public SerieService() {
     }
 
-    public Serie createSerie(SerieContent serieContent) {
+    public Serie createSerie(SerieContent serieContent, User user) {
         VisualContent visualContent = new VisualContent()
                 .setTitle(serieContent.getTitle())
                 .setReleaseAt(serieContent.getReleaseAt() != null ? serieContent.getReleaseAt() : new Date())
                 .setCategory(serieContent.getCategory())
                 .setCreator(serieContent.getCreator())
-                .setDescription(serieContent.getDescription());
+                .setDescription(serieContent.getDescription())
+                .setUser(user);
 
         Serie newSerie = new Serie(serieContent.getNumberOfSeasons(), visualContent);
         visualContentRepository.save(visualContent);

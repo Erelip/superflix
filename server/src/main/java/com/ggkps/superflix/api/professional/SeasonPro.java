@@ -1,16 +1,24 @@
 package com.ggkps.superflix.api.professional;
 
 import com.ggkps.superflix.entities.Season;
+import com.ggkps.superflix.entities.User;
+import com.ggkps.superflix.models.SeasonContent;
 import com.ggkps.superflix.repositories.SeasonRepository;
 import com.ggkps.superflix.services.SeasonService;
+import com.ggkps.superflix.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/professional")
 public class SeasonPro {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SeasonRepository seasonRepository;
@@ -20,48 +28,48 @@ public class SeasonPro {
 
     public SeasonPro() {
     }
-
-    @PostMapping("/season/")
-    public String createSeason(@RequestBody Season season) {
-        Season newSeason = seasonService.createSeason(season);
-
-        System.out.println(newSeason);
-
-        if (newSeason != null) {
-            return newSeason.toString();
+    @PostMapping("/season")
+    public ResponseEntity<Season> createSeason(@RequestHeader(value="Authorization") String authorization, @RequestBody SeasonContent seasonContent) {
+        authorization = authorization.replace("Bearer ", "");
+        Optional<User> user = userService.getUserFromToken(authorization);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        return "Season not created";
+        Season newSeason = seasonService.createSeason(seasonContent);
+
+        if (newSeason != null) {
+            return ResponseEntity.ok().body(newSeason);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/season")
+    public ResponseEntity<List<Season>> readSeasons(@RequestHeader(value="Authorization") String authorization) {
+        List<Season> seasons = seasonRepository.findAll();
+        return ResponseEntity.ok().body(seasons);
     }
 
     @GetMapping("/season/{season_id}")
-    public String readSeason(@PathVariable("season_id") Long season_id) {
+    public ResponseEntity<Season> readSeason(@RequestHeader(value="Authorization") String authorization, @PathVariable("season_id") Long season_id) {
         Optional<Season> season = seasonRepository.findById(season_id);
-
-        if (season.isPresent()) {
-            return season.get().toString();
-        }
-
-        return "Season not found";
+        return season.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/season/{season_id}")
-    public String updateSeason(@PathVariable("season_id") long season_id, @RequestBody Season season) {
-        Optional<Season> updateSeason = seasonRepository.findById(season_id);
+    public ResponseEntity<Season> updateSeason(@RequestHeader(value="Authorization") String authorization, @PathVariable("season_id") long season_id, @RequestBody SeasonContent seasonContent) {
+        // Check if user is authorized to update season
+        Season updatedSeason = seasonService.updateSeason(season_id, seasonContent);
 
-        if (updateSeason.isEmpty()) {
-            return "Season not found";
-        }
-
-        Season updatedSeason = seasonService.updateSeason(season_id, updateSeason.get());
-
-        return updatedSeason.toString();
+        return ResponseEntity.ok().body(updatedSeason);
     }
 
     @DeleteMapping("/season/{season_id}")
-    public String deleteSeason(@PathVariable("season_id") Long season_id) {
+    public ResponseEntity<Season> deleteSeason(@RequestHeader(value="Authorization") String authorization, @PathVariable("season_id") Long season_id) {
+        // Check if user is authorized to delete season
         boolean exists = seasonService.deleteSeason(season_id);
 
-        return exists ? "Season deleted" : "Season not found";
+        return exists ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

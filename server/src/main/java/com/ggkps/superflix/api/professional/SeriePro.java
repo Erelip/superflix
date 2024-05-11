@@ -1,17 +1,24 @@
 package com.ggkps.superflix.api.professional;
 
 import com.ggkps.superflix.entities.Serie;
+import com.ggkps.superflix.entities.User;
 import com.ggkps.superflix.models.SerieContent;
 import com.ggkps.superflix.repositories.SerieRepository;
 import com.ggkps.superflix.services.SerieService;
+import com.ggkps.superflix.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/professional")
 public class SeriePro {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SerieRepository serieRepository;
@@ -22,47 +29,46 @@ public class SeriePro {
     public SeriePro() {
     }
 
-    @PostMapping("/serie/")
-    public String createSerie(@RequestBody SerieContent serieContent) {
-        Serie newSerie = serieService.createSerie(serieContent);
-
-        System.out.println(newSerie);
-
-        if (newSerie != null) {
-            return newSerie.toString();
+    @PostMapping("/serie")
+    public ResponseEntity<Serie> createSerie(@RequestHeader(value="Authorization") String authorization, @RequestBody SerieContent serieContent) {
+        authorization = authorization.replace("Bearer ", "");
+        Optional<User> user = userService.getUserFromToken(authorization);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        return "Serie not created";
+        Serie newSerie = serieService.createSerie(serieContent, user.get());
+
+        if (newSerie != null) {
+            return ResponseEntity.ok().body(newSerie);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/serie")
+    public ResponseEntity<List<Serie>> readSeries(@RequestHeader(value="Authorization") String authorization) {
+        List<Serie> series = serieRepository.findAll();
+        return ResponseEntity.ok().body(series);
     }
 
     @GetMapping("/serie/{serie_id}")
-    public String readSerie(@PathVariable("serie_id") Long serie_id) {
+    public ResponseEntity<Serie> readSerie(@RequestHeader(value="Authorization") String authorization, @PathVariable("serie_id") Long serie_id) {
         Optional<Serie> serie = serieRepository.findById(serie_id);
-
-        if (serie.isPresent()) {
-            return serie.get().toString();
-        }
-
-        return "Serie not found";
+        return serie.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/serie/{serie_id}")
-    public String updateSerie(@PathVariable("serie_id") long serie_id, @RequestBody SerieContent serieContent) {
-        Optional<Serie> serie = serieRepository.findById(serie_id);
-
-        if (serie.isEmpty()) {
-            return "Serie not found";
-        }
-
+    public ResponseEntity<Serie> updateSerie(@RequestHeader(value="Authorization") String authorization, @PathVariable("serie_id") long serie_id, @RequestBody SerieContent serieContent) {
         Serie updatedSerie = serieService.updateSerie(serie_id, serieContent);
 
-        return updatedSerie.toString();
+        return ResponseEntity.ok().body(updatedSerie);
     }
 
     @DeleteMapping("/serie/{serie_id}")
-    public String deleteSerie(@PathVariable("serie_id") Long serie_id) {
+    public ResponseEntity<Serie> deleteSerie(@RequestHeader(value="Authorization") String authorization, @PathVariable("serie_id") Long serie_id) {
         boolean exists = serieService.deleteSerie(serie_id);
 
-        return exists ? "Serie deleted" : "Serie not found";
+        return exists ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

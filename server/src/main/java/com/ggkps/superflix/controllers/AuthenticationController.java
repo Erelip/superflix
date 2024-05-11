@@ -36,10 +36,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Jwt> login(@RequestBody LoginSchema loginSchema) {
-        System.out.println("test");
         User user = this.authenticationService.authenticate(loginSchema.getUsername(), loginSchema.getPassword()).orElse(null);
-
-        System.out.println(user);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -48,7 +45,6 @@ public class AuthenticationController {
                 .password(user.getPassword())
                 .roles(user.getRole())
                 .build();
-        System.out.println(user);
         String token = jwtTokenUtil.generateToken(new UsernamePasswordAuthenticationToken(userDetails, null), user.getRole(), user.getEmail());
         System.out.println(token);
         return ResponseEntity.ok(new Jwt(token));

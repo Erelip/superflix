@@ -1,15 +1,19 @@
 package com.ggkps.superflix.api.admin;
 
+import com.ggkps.superflix.entities.Movie;
 import com.ggkps.superflix.entities.Serie;
 import com.ggkps.superflix.entities.User;
 import com.ggkps.superflix.models.SerieContent;
 import com.ggkps.superflix.repositories.SerieRepository;
 import com.ggkps.superflix.repositories.UserRepository;
 import com.ggkps.superflix.services.SerieService;
+import com.ggkps.superflix.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,54 +29,28 @@ public class UserAdmin {
     @Autowired
     private SerieRepository serieRepository;
 
-    // @Autowired
-    // private UserService userService;
+    @Autowired
+    private UserService userService;
 
     public UserAdmin() {
     }
 
-    /*
-    @PostMapping("/user/")
-    public String createUser(@RequestBody User user) {
-        User newUser = userService.createUser(user);
-
-        System.out.println(newUser);
-
-        if (newUser != null) {
-            return newUser.toString();
-        }
-
-        return "User not created";
-    }
-    */
-
-    @GetMapping("/user/{serie_id}")
-    public String readSerie(@PathVariable("serie_id") Long serie_id) {
-        Optional<User> serie = userRepository.findById(serie_id);
-
-        if (serie.isPresent()) {
-            return serie.get().toString();
-        }
-
-        return "Serie not found";
+    @GetMapping("/user")
+    public ResponseEntity<List<User>> readUsers(@RequestHeader(value="Authorization") String authorization) {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok().body(users);
     }
 
-    @PatchMapping("/user/{serie_id}")
-    public String updateSerie(@PathVariable("serie_id") long serie_id, @RequestBody SerieContent serieContent) {
-        Optional<Serie> serie = serieRepository.findById(serie_id);
-
-        if (serie.isEmpty()) {
-            return "Serie not found";
-        }
-
-        Serie updatedSerie = serieService.updateSerie(serie_id, serieContent);
-
-        return updatedSerie.toString();
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<User> readUser(@PathVariable("user_id") Long user_id) {
+        Optional<User> user = userRepository.findById(user_id);
+        return user.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/user/{serie_id}")
-    public String deleteSerie(@PathVariable("serie_id") Long serie_id) {
-        boolean exists = serieService.deleteSerie(serie_id);
+
+    @DeleteMapping("/user/{user_id}")
+    public String deleteSerie(@PathVariable("user_id") Long user_id) {
+        boolean exists = userService.deleteUser(user_id);
 
         return exists ? "Serie deleted" : "Serie not found";
     }

@@ -1,6 +1,7 @@
 package com.ggkps.superflix.services;
 
 import com.ggkps.superflix.entities.Season;
+import com.ggkps.superflix.models.SeasonContent;
 import com.ggkps.superflix.repositories.SerieRepository;
 import com.ggkps.superflix.repositories.SeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,22 @@ public class SeasonService {
         return seasonRepository.save(season);
     }
 
-    public Season updateSeason(long id, Season season) {
-        Optional<Season> updateSeason = seasonRepository.findById(id);
+    public Season createSeason(SeasonContent seasonContent) {
+        Season season = new Season();
+        season.setSerie(serieRepository.findById(Long.parseLong(seasonContent.getSerie_id())).get());
+        season.setNumber(Integer.parseInt(seasonContent.getNumber()));
+        return seasonRepository.save(season);
+    }
+
+    public Season updateSeason(Long season_id, SeasonContent seasonContent) {
+        Optional<Season> updateSeason = seasonRepository.findById(season_id);
 
         if (updateSeason.isEmpty()) {
             return null;
         }
 
         Season seasonToUpdate = updateSeason.get();
-        seasonToUpdate.setNumberOfEpisodes(season.getNumberOfEpisodes());
+        seasonToUpdate.setNumberOfEpisodes(Integer.parseInt(seasonContent.getNumber()));
 
         return seasonRepository.save(seasonToUpdate);
     }

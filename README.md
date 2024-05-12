@@ -75,10 +75,10 @@ docker-compose up --detach
 
 ### <u>Episode</u>
 
-| Method   | URL                            | Description      |
-|----------|--------------------------------|------------------|
-| `POST`   | `admin\|pro/episode`           | Create a episode |
-| `GET`    | `admin\|pro\|user/episode`     | Get all episodes |
-| `GET`    | `admin\|pro\|user/episode/:id` | Get a episode    |
-| `PATCH`  | `admin\|pro/episode/:id`       | Update a episode |
-| `DELETE` | `admin\|pro/episode/:id`       | Delete a episode |
+| Method   | URL                            | Description       |
+|----------|--------------------------------|-------------------|
+| `POST`   | `admin\|pro/episode`           | Create an episode |
+| `GET`    | `admin\|pro\|user/episode`     | Get all episodes  |
+| `GET`    | `admin\|pro\|user/episode/:id` | Get an episode    |
+| `PATCH`  | `admin\|pro/episode/:id`       | Update an episode |
+| `DELETE` | `admin\|pro/episode/:id`       | Delete an episode |

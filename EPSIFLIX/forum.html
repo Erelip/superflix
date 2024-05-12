@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="forum.css">
+</head>
+<body>    
+    <div class="tabs">
+        <button class="tablinks active" onclick="openTab(event, 'film1')">Show</button>
+        <button class="tablinks" onclick="openTab(event, 'film2')">Movie</button>
+        <button class="tablinks" onclick="openTab(event, 'film3')">Book</button>
+    </div>
+    
+    <div id="film1" class="tabcontent">
+        <h2>Show</h2>
+        <!-- Messages pour Film 1 -->
+    </div>
+
+    <div id="film2" class="tabcontent" style="display: none;">
+        <h2>Movie</h2>
+        <!-- Messages pour Film 2 -->
+    </div>
+
+    <div id="film3" class="tabcontent" style="display: none;">
+        <h2>Book</h2>
+        <!-- Messages pour Film 3 -->
+    </div>
+    
+    <div id="messages"></div>
+    
+    <form id="messageForm">
+        <textarea id="messageInput" placeholder="Entrez votre message ici"></textarea>
+        <button type="submit">Envoyer</button>
+    </form>
+    
+    <button onclick="window.location.href='index.html'">EPSIFLIX</button>
+    
+    <script src="forum.js"></script>
+</body>
+</html>

@@ -1,27 +1,22 @@
 package com.ggkps.superflix;
 
 import com.ggkps.superflix.controllers.AuthenticationController;
-import com.ggkps.superflix.controllers.HomeController;
+import com.ggkps.superflix.controllers.TestController;
 import com.ggkps.superflix.entities.User;
 import com.ggkps.superflix.services.UserService;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import com.ggkps.superflix.entities.Movie;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -34,7 +29,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 class SuperflixApplicationTests {
 
 	@Autowired
-	private HomeController controller;
+	private TestController controller;
 
 	@Autowired
 	private AuthenticationController authController;

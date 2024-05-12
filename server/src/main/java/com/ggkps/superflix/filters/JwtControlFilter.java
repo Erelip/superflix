@@ -46,7 +46,6 @@ public class JwtControlFilter extends OncePerRequestFilter {
 
                 String username = jwtService.extractUsername(jwt);
                 String role = jwtService.extractRole(jwt);
-                System.out.println("Role: " + role);
                 AuthUser authUser = (AuthUser) authUserDetailService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(authUser, null, authUser.getAuthorities());
@@ -60,6 +59,7 @@ public class JwtControlFilter extends OncePerRequestFilter {
             }
         } catch(UsernameNotFoundException e) {
             System.out.println(e.getMessage());
+            return;
         }
 
         filterChain.doFilter(request, response);

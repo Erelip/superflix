@@ -36,7 +36,7 @@ docker-compose up --detach
 
 ## API Endpoints
 
-### <u>Auth</u>
+### <u>Authentication</u>
 
 | Method   | URL               | Description           |
 |----------|-------------------|-----------------------|

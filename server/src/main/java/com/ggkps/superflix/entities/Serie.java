@@ -5,29 +5,6 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
-/*
-    CREATE TABLE IF NOT EXISTS serie (
-        id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        numberOfSeasons INT,
-        visualContentId bigint REFERENCES visual_content(id)
-    );
-
-    CREATE TABLE IF NOT EXISTS season (
-        id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        numberOfEpisode INT,
-        serieId bigint REFERENCES serie(id),
-        release_at DATE
-    );
-
-    CREATE TABLE IF NOT EXISTS episode (
-        id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        number INT,
-        seasonId bigint REFERENCES season(id),
-        path VARCHAR(100),
-        release_at DATE
-    );
- */
 @Entity(name = "serie")
 @Table
 public class Serie {

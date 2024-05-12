@@ -1,27 +1,10 @@
 package com.ggkps.superflix.entities;
 
-import com.ggkps.superflix.entities.Serie;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.List;
 
-
-/*
-    CREATE TABLE IF NOT EXISTS visual_content (
-        id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        title VARCHAR(50),
-        description TEXT,
-        category VARCHAR(100),
-        creator VARCHAR(50),
-        release_at DATE
-    );
-    CREATE TABLE IF NOT EXISTS serie (
-        id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        numberOfSeasons INT,
-        visualContentId bigint REFERENCES visual_content(id)
-    );
- */
 @Entity(name = "visual_content")
 @Table
 public class VisualContent {

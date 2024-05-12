@@ -3,18 +3,8 @@ package com.ggkps.superflix.entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
-
-/*
-CREATE TABLE IF NOT EXISTS episode (
-    id bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    number INT,
-    season_id bigint,
-    path VARCHAR(100),
-    release_at DATE,
-    FOREIGN KEY (season_id) REFERENCES season(id)
-);
- */
 @Entity(name = "episode")
 @Table
 public class Episode {
@@ -38,6 +28,10 @@ public class Episode {
     @ManyToOne
     @JoinColumn(name="season_id", nullable=false)
     private Season season;
+
+    @OneToMany
+    @JoinColumn(name="forum_id", nullable=false)
+    private List<Forum> forums;
 
     public Episode() {
     }
@@ -103,6 +97,16 @@ public class Episode {
 
     public Episode getSeason(Season season) {
         this.season = season;
+
+        return this;
+    }
+
+    public List<Forum> getForums() {
+        return forums;
+    }
+
+    public Episode setForums(List<Forum> forums) {
+        this.forums = forums;
 
         return this;
     }

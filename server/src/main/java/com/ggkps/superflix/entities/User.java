@@ -11,9 +11,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String username;
+
+    @Column
     private String email;
+
+    @Column
     private String password;
+
+    @Column
     private String role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
@@ -21,6 +29,9 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Favorite> favorite;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public User() {
     }
@@ -31,6 +42,7 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
     public Long getId() {
         return this.id;
     }
@@ -87,8 +99,25 @@ public class User {
         this.favorite = favorite;
     }
 
+    public List<Comment> getComments() {
+        return this.comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
-        return "User{id=" + this.id + ", firstname='" + this.username  + "', email='" + this.email + "', password='" + this.password + "'}";
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", visualContents=" + visualContents +
+                ", favorite=" + favorite +
+                ", comments=" + comments +
+                '}';
     }
 }

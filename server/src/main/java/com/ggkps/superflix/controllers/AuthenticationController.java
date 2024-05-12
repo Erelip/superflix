@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -56,10 +57,21 @@ public class AuthenticationController {
     }
 
     @GetMapping("/register")
-    public String register(@RequestBody RegisterSchema registerSchema) {
-        List<User> allUsers = this.repository.findAll();
+    public ResponseEntity<User> register(@RequestBody RegisterSchema registerSchema) {
+        Optional<User> user = this.repository.findOneByEmail(registerSchema.getEmail());
 
-        System.out.println(registerSchema);
-        return "Register!";
+        if (user.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        User newUser = new User();
+        newUser.setEmail(registerSchema.getEmail());
+        newUser.setUsername(registerSchema.getUsername());
+        newUser.setPassword(registerSchema.getPassword());
+        newUser.setRole("USER");
+
+        this.repository.save(newUser);
+
+        return ResponseEntity.ok(newUser);
     }
 }
